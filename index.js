@@ -8,6 +8,7 @@ morgan.token('post_body', (request, response) => {
   return JSON.stringify(request.body)
 })
 
+app.use(express.static('build'))
 app.use(express.json())
 app.use(
   morgan(
@@ -40,6 +41,10 @@ let directory = [
 ]
 
 app.set('json spaces', 2)
+
+app.get('/', (request, response) => {
+  response.json(directory)
+})
 
 app.get('/api/directory', (request, response) => {
   response.json(directory)
