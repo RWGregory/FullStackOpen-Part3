@@ -79,8 +79,25 @@ const createId = () => {
   return Math.floor(Math.random() * 1000)
 }
 
+app.put('/api/directory/:id', (request, response) => {
+  const id = Number(request.params.id)
+  const body = request.body
+  const contact = directory.find((c) => c.id === id)
+  const index = directory.indexOf(contact)
+  const update = {
+    ...contact,
+    number: body.number,
+  }
+  directory = directory
+    .slice(0, index)
+    .concat(update)
+    .concat(directory.slice(index + 1))
+  response.json(body)
+})
+
 app.post('/api/directory', (request, response) => {
   const body = request.body
+  console.log(request.body)
   const name = directory.find((c) => c.name === body.name)
 
   if (name) {
