@@ -2,6 +2,6 @@ POST http://localhost:3001/api/directory
 content-type: application/json
 
 {
-  "name": "Ryan Gregory",
-  "number": "6785578014"
+  "name": "Dan Abramov",
+  "number": "098751235"
 }

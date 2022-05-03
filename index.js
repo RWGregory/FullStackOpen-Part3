@@ -1,6 +1,8 @@
+require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
+const Contact = require('./models/contact')
 
 const app = express()
 
@@ -17,117 +19,61 @@ app.use(
 )
 app.use(cors())
 
-let directory = [
-  {
-    id: 1,
-    name: 'Arto Hellas',
-    number: '040-123456',
-  },
-  {
-    id: 2,
-    name: 'Ada Lovelace',
-    number: '39-44-5323523',
-  },
-  {
-    id: 3,
-    name: 'Dan Abramov',
-    number: '12-43-234345',
-  },
-  {
-    id: 4,
-    name: 'Mary Poppendieck',
-    number: '39-23-6423122',
-  },
-]
-
 app.set('json spaces', 2)
 
 app.get('/', (request, response) => {
-  response.json(directory)
+  Contact.find({}).then((contacts) => {
+    response.json(contacts)
+  })
 })
 
 app.get('/api/directory', (request, response) => {
-  response.json(directory)
+  Contact.find({}).then((contacts) => {
+    response.json(contacts)
+  })
 })
 
 app.get('/info', (request, response) => {
-  const totalContacts = directory.length
-  const date = new Date()
-  response.send(
-    `<p>Phonebook has info for ${totalContacts} contacts</p> <p>${date}</p>`,
-  )
+  Contact.find({}).then((contacts) => {
+    const date = new Date()
+    response.send(
+      `<p>Phonebook has info for ${contacts.length} contacts</p> <p>${date}</p>`,
+    )
+  })
 })
 
 app.get('/api/directory/:id', (request, response) => {
-  const id = Number(request.params.id)
-  const contact = directory.find((contact) => contact.id === id)
-
-  if (contact) {
+  Contact.findById(request.params.id).then((contact) => {
     response.json(contact)
-  } else {
-    response.status(404).end()
-  }
+  })
 })
 
 app.delete('/api/directory/:id', (request, response) => {
-  const id = Number(request.params.id)
-  directory = directory.filter((contact) => contact.id !== id)
-  response.status(204).end()
+  Contact.findByIdAndDelete(request.params.id).then((c) => {
+    response.json(c)
+  })
 })
 
-const createId = () => {
-  return Math.floor(Math.random() * 1000)
-}
-
 app.put('/api/directory/:id', (request, response) => {
-  const id = Number(request.params.id)
-  const body = request.body
-  const contact = directory.find((c) => c.id === id)
-  const index = directory.indexOf(contact)
-  const update = {
-    ...contact,
-    number: body.number,
-  }
-  directory = directory
-    .slice(0, index)
-    .concat(update)
-    .concat(directory.slice(index + 1))
-  response.json(body)
+  Contact.findByIdAndUpdate(request.params.id).then((c) => {
+    response.json(c)
+  })
 })
 
 app.post('/api/directory', (request, response) => {
   const body = request.body
   console.log(request.body)
-  const name = directory.find((c) => c.name === body.name)
 
-  if (name) {
-    return response.status(400).json({
-      error: 'New contacts must have unique names',
-    })
-  }
-
-  if (!body.name) {
-    return response.status(400).json({
-      error: 'Name missing',
-    })
-  }
-
-  if (!body.number) {
-    return response.status(400).json({
-      error: 'Number missing',
-    })
-  }
-
-  const contact = {
-    id: createId(),
+  const contact = new Contact({
     name: body.name,
     number: body.number,
-  }
-  directory = directory.concat(contact)
-  response.json(contact)
+  })
+  contact.save().then((savedNote) => {
+    response.json(savedNote)
+  })
 })
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
