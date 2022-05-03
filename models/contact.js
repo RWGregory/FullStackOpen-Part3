@@ -14,9 +14,35 @@ mongoose
     console.log('error connecting to MongoDB', error.message)
   })
 
+const validator = (val) => {
+  const chunks = val.split('-')
+  if (chunks.length > 2) {
+    return false
+  } else if (chunks.length === 2) {
+    if (chunks[0].length < 2 || chunks[0].length > 3) {
+      return false
+    } else {
+      return true
+    }
+  } else {
+    return
+  }
+}
+
+const custom = [validator, 'try re-formatting {VALUE}']
+
 const contactSchema = new mongoose.Schema({
-  name: String,
-  number: String,
+  name: {
+    type: String,
+    minlength: 3,
+    required: true,
+  },
+  number: {
+    type: String,
+    minLength: 8,
+    required: true,
+    validate: custom,
+  },
 })
 
 contactSchema.set('toJSON', {
