@@ -1,7 +1,0 @@
-PUT http://localhost:3001/api/directory/6270a40a78d2d6c0b8cabd86
-content-type: application/json
-
-{
-  "name": "Tigger Fartley",
-  "number": "6784578396"
-}
