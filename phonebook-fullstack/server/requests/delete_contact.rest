@@ -1,0 +1,1 @@
+DELETE http://localhost:3001/api/directory/6270971d78d2d6c0b8cabd56

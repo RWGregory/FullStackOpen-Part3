@@ -1,0 +1,7 @@
+POST http://localhost:3001/api/directory
+content-type: application/json
+
+{
+  "name": "Dan Abramov",
+  "number": "0-98751235"
+}
