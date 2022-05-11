@@ -1,0 +1,44 @@
+h1 {
+  color: green;
+  font-style: italic;
+}
+
+.success {
+  color: green;
+  background: lightcoral;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.error {
+  color: crimson;
+  background: grey;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.directory {
+  color: rgb(124, 111, 111);
+  font-size: 15px;
+}
+
+.contact {
+  width: 42%;
+  display: flex;
+  justify-content: space-between;
+  margin: 0.4rem;
+  padding-right: 5rem;
+  background-color: blanchedalmond;
+}
+
+.btn-delete {
+  background-color: lightcoral;
+  border: hidden;
+  border-radius: 2px;
+}
